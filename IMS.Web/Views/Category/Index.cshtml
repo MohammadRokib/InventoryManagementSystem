@@ -1,0 +1,35 @@
+﻿@model List<Category>
+
+<div class="container">
+	<div class="row pt-4 pb-3">
+		<div class="col-6">
+			<h2 class="text-primary">Category List</h2>
+		</div>
+		<div class=col-6>
+			<a asp-controller="Category" asp-action="Create" class="btn btn-primary">
+				<i class="bi bi-plus-circle"></i> Create New Category
+			</a>
+		</div>
+	</div>
+</div>
+
+<table class="table table-bordered table-striped">
+	<thead>
+		<tr>
+			<th class="align-middle text-center">Category ID</th>
+			<th class="align-middle text-center">Category Name</th>
+			<th class="align-middle text-center">Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach(var item in Model.OrderBy(x => x.CategoryName))
+		{
+			<tr>
+				<td class="align-middle text-center">@item.CategoryID</td>
+				<td class="align-middle text-center">@item.CategoryName</td>
+				<td class="align-middle" style="text-align: justify">@item.Description</td>
+			</tr>
+		}
+	</tbody>
+	
+</table>
