@@ -98,5 +98,62 @@ namespace IMS.Web.Controllers
 			}
 			return View(obj);
 		}
+
+        public IActionResult Delete(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+
+            Category? categoryObj = new Category();
+            try
+            {
+                categoryObj = _db.Categories.Find(id);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"An error occured during connecting to the database: ${ex}");
+            }
+
+            if (categoryObj == null)
+            {
+                return NotFound();
+            }
+
+            return View(categoryObj);
+        }
+        [HttpPost, ActionName("Delete")]
+        public IActionResult DeletePOST(int? id)
+        {
+            Category? categoryObj = new Category();
+            try
+            {
+                categoryObj = _db.Categories.Find(id);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"An error occured during conncting to the database: ${ex}");
+            }
+
+            try
+            {
+                _db.Categories.Remove(categoryObj);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"Something went wrong while deleting the record: {ex}");
+            }
+
+            try
+            {
+                _db.SaveChanges();
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"Something went wrong: {ex}");
+            }
+			return RedirectToAction("Index");
+		}
 	}
 }
