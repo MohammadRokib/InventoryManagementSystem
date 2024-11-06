@@ -49,9 +49,10 @@ namespace IMS.Web.Controllers
 					Console.WriteLine($"An error occured during connecting to the database: {ex}");
 					return View(obj);
 				}
+                TempData["success"] = $"Category {obj.CategoryName} created successfully";
 				return RedirectToAction("Index", "Category");
             }
-            return View(obj);
+            return View();
         }
 
         public IActionResult Edit(int? id)
@@ -94,9 +95,10 @@ namespace IMS.Web.Controllers
 					Console.WriteLine($"An error occured during connecting to the database: {ex}");
 					return View(obj);
 				}
+                TempData["success"] = $"Category {obj.CategoryName} updated successfully";
 				return RedirectToAction("Index", "Category");
 			}
-			return View(obj);
+			return View();
 		}
 
         public IActionResult Delete(int? id)
@@ -139,20 +141,14 @@ namespace IMS.Web.Controllers
             try
             {
                 _db.Categories.Remove(categoryObj);
-            }
+				_db.SaveChanges();
+			}
             catch(Exception ex)
             {
                 Console.WriteLine($"Something went wrong while deleting the record: {ex}");
             }
 
-            try
-            {
-                _db.SaveChanges();
-            }
-            catch(Exception ex)
-            {
-                Console.WriteLine($"Something went wrong: {ex}");
-            }
+            TempData["success"] = $"Category {categoryObj.CategoryName} deleted successfully";
 			return RedirectToAction("Index");
 		}
 	}
